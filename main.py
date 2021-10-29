@@ -33,6 +33,13 @@ def main():
 
         driver.get('https://betfury.io/live/baccarat-2-3-4')
 
+        try: #pop-up detect and close
+            WebDriverWait(driver, 5).until(
+                ec.visibility_of_element_located((By.CSS_SELECTOR, ".new-popup__container")))
+            driver.find_element_by_css_selector('button.new-popup__btn-close').click()
+        except:
+            print('No pop-up found')
+
         # authenticate
         WebDriverWait(driver, 200).until(ec.visibility_of_element_located(
             (By.CSS_SELECTOR, ".btn.btn_outline.btn_medium")))
@@ -91,15 +98,14 @@ def main():
 
         WebDriverWait(driver, 200).until(ec.visibility_of_element_located(
             (By.CSS_SELECTOR, "svg > svg > g")))
+
+        
         for game in games:
             table = game.find_elements_by_css_selector('div.roadContainer--2ujMr svg')
 
-           
-
-            
-
             table_name = game.find_element_by_css_selector('span.tableName--3PUPn')
             print("\n" + table_name.text)
+
 
             for dot in table:
                 x_coor = dot.get_attribute('data-x')
