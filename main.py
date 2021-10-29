@@ -148,7 +148,6 @@ def main():
     except Exception as ex:
         print(ex)
 
-    a = 0
 
 if __name__ == '__main__':
     main()
