@@ -4,7 +4,6 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as ec
 from fake_useragent import UserAgent
 import credentials
-import pickle
 import time
 
 
@@ -35,12 +34,12 @@ def main():
         driver.get('https://betfury.io/live/baccarat-2-3-4')
 
         # authenticate
-        WebDriverWait(driver, 20).until(ec.visibility_of_element_located(
+        WebDriverWait(driver, 200).until(ec.visibility_of_element_located(
             (By.CSS_SELECTOR, ".btn.btn_outline.btn_medium")))
         driver.find_element_by_css_selector(
             '.btn.btn_outline.btn_medium').click()
 
-        WebDriverWait(driver, 20).until(
+        WebDriverWait(driver, 200).until(
             ec.visibility_of_element_located((By.CSS_SELECTOR, ".input__value")))
         loginInput = driver.find_elements_by_css_selector('.input__value')[0]
         loginInput.clear()
@@ -56,25 +55,62 @@ def main():
         submit_button.click()
 
         # Set TRX currency
-        WebDriverWait(driver, 20).until(
+        WebDriverWait(driver, 200).until(
             ec.visibility_of_element_located((By.CSS_SELECTOR, ".balance__inner")))
 
         driver.find_element_by_css_selector('.balance__inner').click()
         driver.find_element_by_css_selector(
             'div.balance-dropdown__inner.balance-dropdown__inner--darkened > ul > li:nth-child(4)').click()
-        
-        WebDriverWait(driver, 20).until(ec.visibility_of_element_located(
-            (By.CSS_SELECTOR, "#play_button")))
-        driver.find_element_by_css_selector('#play_button').click()
 
         # Start game
         WebDriverWait(driver, 200).until(ec.visibility_of_element_located(
+            (By.CSS_SELECTOR, "#play_button")))
+        driver.find_element_by_css_selector('#play_button').click()
+
+        # Switch to game iframe
+        WebDriverWait(driver, 200).until(ec.visibility_of_element_located(
+            (By.CSS_SELECTOR, "div.single-game-modal-body-block iframe")))
+        driver.switch_to.frame(driver.find_element_by_css_selector(
+            "div.single-game-modal-body-block iframe"))
+
+        WebDriverWait(driver, 200).until(ec.visibility_of_element_located(
             (By.CSS_SELECTOR, "div.multiplayButtonContainer--a_4PI > div > div > button")))
         driver.find_element_by_css_selector(
-            'div.multiplayButtonContainer--a_4PI > div > div > button').click()
+            "div.multiplayButtonContainer--a_4PI > div > div > button").click()
 
-        time.sleep(100)
-        # driver.close()
+        # Switch to game side-bar iframe
+        WebDriverWait(driver, 200).until(ec.visibility_of_element_located(
+            (By.CSS_SELECTOR, "div.sidebar-container > iframe")))
+        driver.switch_to.frame(driver.find_element_by_css_selector(
+            "div.sidebar-container > iframe"))
+
+        # Collect games
+        WebDriverWait(driver, 200).until(ec.visibility_of_element_located(
+            (By.CSS_SELECTOR, ".item--1TwGJ")))
+        games = driver.find_elements_by_css_selector(".item--1TwGJ")
+
+        WebDriverWait(driver, 200).until(ec.visibility_of_element_located(
+            (By.CSS_SELECTOR, "svg > svg > g")))
+        for game in games:
+            table = game.find_elements_by_css_selector('div.roadContainer--2ujMr svg')
+
+           
+
+            
+
+            table_name = game.find_element_by_css_selector('span.tableName--3PUPn')
+            print("\n" + table_name.text)
+
+            for dot in table:
+                x_coor = dot.get_attribute('data-x')
+                y_coor = dot.get_attribute('data-y')
+                data_type = dot.get_attribute('data-type')
+
+                if data_type == 'coordinates':
+                    print(f'data-type: {data_type}\n x: {x_coor}, y: {y_coor} ')
+
+        time.sleep(10)
+        driver.close()
 
     except Exception as ex:
         print(ex)
