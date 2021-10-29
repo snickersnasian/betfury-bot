@@ -107,7 +107,7 @@ def main():
                 data_type = dot.get_attribute('data-type')
 
                 if data_type == 'coordinates':
-                    print(f'data-type: {data_type}\n x: {x_coor}, y: {y_coor} ')
+                    print(f'data-type: {data_type}\n x: {x_coor}, y: {y_coor} ') 
 
         time.sleep(10)
         driver.close()
