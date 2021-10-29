@@ -145,8 +145,6 @@ def main():
         time.sleep(10)
         driver.close()
 
-        a = 0
-
     except Exception as ex:
         print(ex)
 
