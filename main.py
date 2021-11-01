@@ -33,12 +33,7 @@ def main():
 
         driver.get('https://betfury.io/live/baccarat-2-3-4')
 
-        try: #pop-up detect and close
-            WebDriverWait(driver, 5).until(
-                ec.visibility_of_element_located((By.CSS_SELECTOR, ".new-popup__container")))
-            driver.find_element_by_css_selector('button.new-popup__btn-close').click()
-        except:
-            print('No pop-up found')
+        time.sleep(5)
 
         # authenticate
         WebDriverWait(driver, 200).until(ec.visibility_of_element_located(
@@ -98,22 +93,54 @@ def main():
 
         WebDriverWait(driver, 200).until(ec.visibility_of_element_located(
             (By.CSS_SELECTOR, "svg > svg > g")))
-
-        
         for game in games:
             table = game.find_elements_by_css_selector('div.roadContainer--2ujMr svg')
 
+           
+            dot_dict = {}
+            # y_array = []
+
+            
+
             table_name = game.find_element_by_css_selector('span.tableName--3PUPn')
             print("\n" + table_name.text)
-
+            
+            x_coor = None
+            old_x = x_coor
 
             for dot in table:
                 x_coor = dot.get_attribute('data-x')
                 y_coor = dot.get_attribute('data-y')
                 data_type = dot.get_attribute('data-type')
 
+                try:
+                    if int(x_coor) != int(old_x) and int(x_coor) - int(old_x) == 1 :
+                        
+                        dot_dict[str(x_coor)] = []
+
+                    # if int(x_coor) != int(old_x) :
+                        
+                    #     dot_dict[str(x_coor)] = []
+                        
+                except Exception as ex:
+                    try:
+                        if isinstance(int(x_coor), int) :
+                            dot_dict[str(x_coor)] = []
+                    except Exception as ex:
+                        a = 0
+
                 if data_type == 'coordinates':
-                    print(f'data-type: {data_type}\n x: {x_coor}, y: {y_coor} ') 
+                    # print(f'data-type: {data_type}\n x: {x_coor}, y: {y_coor} ')
+                    # y_array.append(y_coor)
+                    # dot_dict.update({x_coor : y_array})
+                    # dot_dict[str(x_coor)] = []
+                    dot_dict[str(x_coor)].append(y_coor)
+                    old_x = x_coor
+            
+            print(dot_dict.items())
+
+            # print(max(int(dot_dict.keys())))
+
 
         time.sleep(10)
         driver.close()
