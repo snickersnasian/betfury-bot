@@ -35,6 +35,16 @@ def main():
 
         time.sleep(5)
 
+<<<<<<< HEAD
+=======
+        try: #pop-up detect and close
+            WebDriverWait(driver, 5).until(
+                ec.visibility_of_element_located((By.CSS_SELECTOR, ".new-popup__container")))
+            driver.find_element_by_css_selector('button.new-popup__btn-close').click()
+        except:
+            print('No pop-up found')
+
+>>>>>>> test-branch1
         # authenticate
         WebDriverWait(driver, 200).until(ec.visibility_of_element_located(
             (By.CSS_SELECTOR, ".btn.btn_outline.btn_medium")))
@@ -93,26 +103,63 @@ def main():
 
         WebDriverWait(driver, 200).until(ec.visibility_of_element_located(
             (By.CSS_SELECTOR, "svg > svg > g")))
-        for game in games:
-            table = game.find_elements_by_css_selector('div.roadContainer--2ujMr svg')
+        
+        time.sleep(3)
 
+        for game in games:
+
+<<<<<<< HEAD
            
             dot_dict = {}
             # y_array = []
+=======
+            # table = game.find_elements_by_css_selector(
+            #     '.item--1TwGJ div.roadContainer--2ujMr svg svg[data-type="coordinates"]')
 
-            
+>>>>>>> test-branch1
 
-            table_name = game.find_element_by_css_selector('span.tableName--3PUPn')
+
+            # dot_dict = {}
+
+            table_name = game.find_element_by_css_selector(
+                'span.tableName--3PUPn')
             print("\n" + table_name.text)
             
             x_coor = None
             old_x = x_coor
 
-            for dot in table:
-                x_coor = dot.get_attribute('data-x')
-                y_coor = dot.get_attribute('data-y')
-                data_type = dot.get_attribute('data-type')
+            last_dot = game.find_element_by_css_selector(
+                '.item--1TwGJ div.roadContainer--2ujMr svg svg[data-type="coordinates"]:last-child')
 
+            print('X:' + last_dot.get_attribute("x"))
+            print('Y:' + last_dot.get_attribute("y"))
+
+            # x_coor = None
+            # old_x = x_coor
+
+            # for dot in table:
+            #     x_coor = dot.get_attribute('data-x')
+            #     y_coor = dot.get_attribute('data-y')
+
+            #     try:
+            #         if int(x_coor) != int(old_x) and int(x_coor) - int(old_x) == 1:
+
+            #             dot_dict[str(x_coor)] = []
+
+            #     except Exception as ex:
+            #         try:
+            #             if isinstance(int(x_coor), int):
+            #                 dot_dict[str(x_coor)] = []
+            #         except Exception as ex:
+            #             a = 0
+
+                
+            #     dot_dict[str(x_coor)].append(y_coor)
+            #     old_x = x_coor
+
+            # print(dot_dict.items())
+
+<<<<<<< HEAD
                 try:
                     if int(x_coor) != int(old_x) and int(x_coor) - int(old_x) == 1 :
                         
@@ -141,6 +188,9 @@ def main():
 
             # print(max(int(dot_dict.keys())))
 
+=======
+            # print(max(int(dot_dict.keys())))
+>>>>>>> test-branch1
 
         time.sleep(10)
         driver.close()
