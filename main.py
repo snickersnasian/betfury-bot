@@ -105,49 +105,40 @@ def main():
 
         for game in games:
 
-            # table = game.find_elements_by_css_selector(
-            #     '.item--1TwGJ div.roadContainer--2ujMr svg svg[data-type="coordinates"]')
-
-
-
-            # dot_dict = {}
+            streak = 0
 
             table_name = game.find_element_by_css_selector(
                 'span.tableName--3PUPn')
-            print("\n" + table_name.text)
+            # print("\n" + table_name.text)
 
             last_dot = game.find_element_by_css_selector(
                 '.item--1TwGJ div.roadContainer--2ujMr svg svg[data-type="coordinates"]:last-child')
 
-            print('X:' + last_dot.get_attribute("x"))
-            print('Y:' + last_dot.get_attribute("y"))
+            # print('X:' + last_dot.get_attribute("x"))
+            # print('Y:' + last_dot.get_attribute("y"))
 
-            # x_coor = None
-            # old_x = x_coor
+            x_coor = last_dot.get_attribute("x")
+            y_coor = last_dot.get_attribute("y")
 
-            # for dot in table:
-            #     x_coor = dot.get_attribute('data-x')
-            #     y_coor = dot.get_attribute('data-y')
+            if y_coor == "5":
+                print("\n" + table_name.text)
 
-            #     try:
-            #         if int(x_coor) != int(old_x) and int(x_coor) - int(old_x) == 1:
+                upper_dot = True
 
-            #             dot_dict[str(x_coor)] = []
+                while (upper_dot):
+                    try:
+                        game.find_element_by_css_selector (f'.item--1TwGJ div.roadContainer--2ujMr svg svg[data-type="coordinates"][x={x_coor}][y={str(int(y_coor) - 1)}]')
+                        upper_dot = False
+                    except:
+                        upper_dot = True
+                    
+                    streak += 1
 
-            #     except Exception as ex:
-            #         try:
-            #             if isinstance(int(x_coor), int):
-            #                 dot_dict[str(x_coor)] = []
-            #         except Exception as ex:
-            #             a = 0
+                    x_coor = str(int(x_coor) - 1)
+                print(streak)    
+
 
                 
-            #     dot_dict[str(x_coor)].append(y_coor)
-            #     old_x = x_coor
-
-            # print(dot_dict.items())
-
-            # print(max(int(dot_dict.keys())))
 
         time.sleep(10)
         driver.close()
