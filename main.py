@@ -5,7 +5,7 @@ from selenium.webdriver.support import expected_conditions as ec
 from fake_useragent import UserAgent
 import credentials
 import time
-
+from selenium.common.exceptions import NoSuchElementException
 
 ua = UserAgent()
 
@@ -102,7 +102,7 @@ def main():
             (By.CSS_SELECTOR, "svg > svg > g")))
         
         time.sleep(3)
-
+        
         for game in games:
 
             streak = 0
@@ -120,17 +120,29 @@ def main():
             x_coor = last_dot.get_attribute("x")
             y_coor = last_dot.get_attribute("y")
 
+            def check_upper_dot_exist (x_coor, y_coor):
+                try:
+                    game.find_element_by_css_selector (f'.item--1TwGJ div.roadContainer--2ujMr svg svg[data-type="coordinates"][x="{x_coor}"][y="{str(int(y_coor) - 1)}"]')
+                
+                except NoSuchElementException:
+                    return True
+                
+                return False
+
             if y_coor == "5":
                 print("\n" + table_name.text)
 
                 upper_dot = True
 
                 while (upper_dot):
-                    try:
-                        game.find_element_by_css_selector (f'.item--1TwGJ div.roadContainer--2ujMr svg svg[data-type="coordinates"][x={x_coor}][y={str(int(y_coor) - 1)}]')
-                        upper_dot = False
-                    except:
-                        upper_dot = True
+                    
+                    # try:
+                    #     game.find_element_by_css_selector (f'.item--1TwGJ div.roadContainer--2ujMr svg svg[data-type="coordinates"][x="{x_coor}"][y="{str(int(y_coor) - 1)}"]')
+                    #     upper_dot = False
+                    # except:
+                    #     upper_dot = True
+
+                    upper_dot = check_upper_dot_exist(x_coor, y_coor)
                     
                     streak += 1
 
