@@ -35,8 +35,6 @@ def main():
 
         time.sleep(5)
 
-<<<<<<< HEAD
-=======
         try: #pop-up detect and close
             WebDriverWait(driver, 5).until(
                 ec.visibility_of_element_located((By.CSS_SELECTOR, ".new-popup__container")))
@@ -44,7 +42,6 @@ def main():
         except:
             print('No pop-up found')
 
->>>>>>> test-branch1
         # authenticate
         WebDriverWait(driver, 200).until(ec.visibility_of_element_located(
             (By.CSS_SELECTOR, ".btn.btn_outline.btn_medium")))
@@ -108,15 +105,9 @@ def main():
 
         for game in games:
 
-<<<<<<< HEAD
-           
-            dot_dict = {}
-            # y_array = []
-=======
             # table = game.find_elements_by_css_selector(
             #     '.item--1TwGJ div.roadContainer--2ujMr svg svg[data-type="coordinates"]')
 
->>>>>>> test-branch1
 
 
             # dot_dict = {}
@@ -159,38 +150,7 @@ def main():
 
             # print(dot_dict.items())
 
-<<<<<<< HEAD
-                try:
-                    if int(x_coor) != int(old_x) and int(x_coor) - int(old_x) == 1 :
-                        
-                        dot_dict[str(x_coor)] = []
-
-                    # if int(x_coor) != int(old_x) :
-                        
-                    #     dot_dict[str(x_coor)] = []
-                        
-                except Exception as ex:
-                    try:
-                        if isinstance(int(x_coor), int) :
-                            dot_dict[str(x_coor)] = []
-                    except Exception as ex:
-                        a = 0
-
-                if data_type == 'coordinates':
-                    # print(f'data-type: {data_type}\n x: {x_coor}, y: {y_coor} ')
-                    # y_array.append(y_coor)
-                    # dot_dict.update({x_coor : y_array})
-                    # dot_dict[str(x_coor)] = []
-                    dot_dict[str(x_coor)].append(y_coor)
-                    old_x = x_coor
-            
-            print(dot_dict.items())
-
             # print(max(int(dot_dict.keys())))
-
-=======
-            # print(max(int(dot_dict.keys())))
->>>>>>> test-branch1
 
         time.sleep(10)
         driver.close()
