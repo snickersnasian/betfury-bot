@@ -101,7 +101,7 @@ def main():
         WebDriverWait(driver, 200).until(ec.visibility_of_element_located(
             (By.CSS_SELECTOR, "svg > svg > g")))
         
-        time.sleep(3)
+        time.sleep(5)
 
         for game in games:
 
@@ -127,7 +127,7 @@ def main():
 
                 while (upper_dot):
                     try:
-                        game.find_element_by_css_selector (f'.item--1TwGJ div.roadContainer--2ujMr svg svg[data-type="coordinates"][x={x_coor}][y={str(int(y_coor) - 1)}]')
+                        game.find_element_by_css_selector (f'.item--1TwGJ div.roadContainer--2ujMr svg svg[data-type="coordinates"][x="{x_coor}"][y="{str(int(y_coor) - 1)}"]')
                         upper_dot = False
                     except:
                         upper_dot = True
